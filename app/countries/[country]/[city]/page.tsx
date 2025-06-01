@@ -4,6 +4,7 @@ import { FC } from "react";
 import AppLayout from "~/components/layouts/app-layout";
 import { dateFormat, formatLargeDate, formatSmallDate, getSunriseAndSunsetOfCity } from "~/lib/utils";
 import CardsSunriseSunset from "./cards-sunrise-sunset";
+import DatesTable from "~/components/dates-table";
 
 type PageProps = {
   params: {
@@ -41,30 +42,7 @@ const CityPage: FC<PageProps> = async ({ params }) => {
           <CardsSunriseSunset yesterday={yesterday} today={today} />
           <div>
             <p className="mb-4 text-3xl">Last 10 days History</p>
-            <table className="w-full bg-white rounded shadow">
-              <thead>
-                <tr className="bg-gray-200 text-gray-600 border-b-1">
-                  <th className="text-start p-2">Date</th>
-                  <th className="text-start p-2">Sunrise</th>
-                  <th className="text-start p-2">Sunset</th>
-                  <th className="text-start p-2">First Light</th>
-                  <th className="text-start p-2">Last Light</th>
-                  <th className="text-start p-2">Day Length</th>
-                </tr>
-              </thead>
-              <tbody>
-                {otherDates.map((item, index) => (
-                  <tr key={`other-dates-item-${index}`} className={index % 2 !== 0 ? 'bg-gray-100' : ''}>
-                    <td className="text-start p-2">{formatSmallDate(item.date)}</td>
-                    <td className="text-start p-2 text-orange-600">{item.sunrise}</td>
-                    <td className="text-start p-2 text-violet-600">{item.sunset}</td>
-                    <td className="text-start p-2">{item.first_light}</td>
-                    <td className="text-start p-2">{item.last_light}</td>
-                    <td className="text-start p-2">{item.day_length}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <DatesTable data={otherDates} />
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { SUNRISE_SUNSET_API_KEY, SUNRISE_SUNSET_CONTRIES_URL } from "./constants"
+import { SUNRISE_SUNSET_API_KEY, SUNRISE_SUNSET_CONTRIES_URL, SUNRISE_SUNSET_QUERY_URL } from "./constants"
 import { City, Country, SunriseSunsetData } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -49,6 +49,21 @@ export async function getSunriseAndSunsetOfCity(countrySlug: string, citySlug: s
 
   if (!response.ok) {
     throw new Error('There is an error trying to retrieve the sunrise and sunset data of city')
+  }
+
+  return await response.json() as { country: Country, city: City, data: SunriseSunsetData[] }
+}
+
+export async function getQuerySearch(query: string, dateStart: string, dateEnd: string) {
+  const response = await fetch(`${SUNRISE_SUNSET_QUERY_URL}?query=${encodeURIComponent(query)}&date_start=${dateStart}&date_end=${dateEnd}`, {
+    headers: {
+      Authorization: `Bearer ${SUNRISE_SUNSET_API_KEY}`
+    },
+    cache: 'no-cache'
+  })
+
+  if (!response.ok) {
+    throw new Error('There is an error trying to retrieve the sunrise and sunset date from query')
   }
 
   return await response.json() as { country: Country, city: City, data: SunriseSunsetData[] }
